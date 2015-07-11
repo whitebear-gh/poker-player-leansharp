@@ -16,7 +16,7 @@ namespace Nancy.Simple
 		{
             try
             {
-                var des = gameState.ToObject<GameState>();
+                var des = gameState.ToObject<RequestStructure.GameState>();
 
                 dynamic hand = CheckCardsOnHand(gameState);
                 dynamic rank = CreateRank(hand);
@@ -55,5 +55,4 @@ namespace Nancy.Simple
 
 	}
 }
-
 
