@@ -10,6 +10,11 @@ namespace Nancy.Simple
 
         public static dynamic CalculateBet(JObject gameState, int? rank)
         {
+            int rankValue = 0;
+            if (rank.HasValue)
+            {
+                rankValue = rank.Value;
+            }
             if (rank.HasValue && rank < 100)
             {
                 return 0;
@@ -39,18 +44,21 @@ namespace Nancy.Simple
             int actualBet = 0;
             if (currentPot <= 3*game.CurrentBuyIn || expectedGainChance >= (1/activePlayerCount))
             {
-//                var round = GetRound(gameState);
-//
-//                actualBet = new[] {maxBet, game.CurrentBuyIn}.Max(s => s);
-//                if (round > 10)
-//                {
-//                    actualBet = actualBet*(round/10);
-//                }
-//                else
-//                {
-//                    actualBet = actualBet*(round/100);
-//                }
-                actualBet = game.CurrentBuyIn;
+                if (rankValue > 200)
+                {
+                    actualBet = currentPot;
+                }
+                else
+                {
+                    if (rankValue < 130 && game.CurrentBuyIn > game.OurPlayer.Stack * 0.15)
+                    {
+                        actualBet = 0;
+                    }
+                    else
+                    {
+                        actualBet = game.CurrentBuyIn;
+                    }
+                }
             }
             return actualBet;
         }
