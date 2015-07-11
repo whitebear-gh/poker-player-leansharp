@@ -7,7 +7,7 @@ namespace Nancy.Simple
     public static partial class PokerPlayer
     {
 
-        public static int? CreateRank(RequestStructure.GameState gameState)
+        public static int? CreateRank(RequestStructure.GameState gameState,Hand hand)
         {
             var isFirstRound = !gameState.CommunityCards.Any();
 
@@ -15,6 +15,11 @@ namespace Nancy.Simple
             {
                 return FirstRound(gameState);
             }
+
+                return (int)hand;
+            
+
+            
             return null;
         }
 

@@ -18,9 +18,9 @@ namespace PokerTests
             var content = File.ReadAllText("..\\..\\gamestate.json");
             gamestate = JObject.Parse(content);
             var state = new RequestStructure.GameState(gamestate);
-
-            var result = PokerPlayer.CreateRank(state);
-            Assert.IsNull(result);
+            var hand = PokerPlayer.CheckCardsOnHand(state);
+            var result = PokerPlayer.CreateRank(state,hand);
+            Assert.IsNotNull(result);
         }
 
         [TestMethod]
@@ -29,8 +29,8 @@ namespace PokerTests
             var content = File.ReadAllText("..\\..\\gamestateFirstRound.json");
             gamestate = JObject.Parse(content);
             var state = new RequestStructure.GameState(gamestate);
-
-            var result = PokerPlayer.CreateRank(state);
+            var hand = PokerPlayer.CheckCardsOnHand(state);
+            var result = PokerPlayer.CreateRank(state, hand);
             Assert.IsNotNull(result);
         }
 
@@ -40,8 +40,8 @@ namespace PokerTests
             var content = File.ReadAllText("..\\..\\gamestateTwoAces.json");
             gamestate = JObject.Parse(content);
             var state = new RequestStructure.GameState(gamestate);
-
-            var result = PokerPlayer.CreateRank(state);
+            var hand = PokerPlayer.CheckCardsOnHand(state);
+            var result = PokerPlayer.CreateRank(state, hand);
             Assert.AreEqual(result.Value, (int)StartingHandRanking.AA);
         }
 
@@ -51,8 +51,8 @@ namespace PokerTests
             var content = File.ReadAllText("..\\..\\gamestateAceKingSame.json");
             gamestate = JObject.Parse(content);
             var state = new RequestStructure.GameState(gamestate);
-
-            var result = PokerPlayer.CreateRank(state);
+            var hand = PokerPlayer.CheckCardsOnHand(state);
+            var result = PokerPlayer.CreateRank(state, hand);
             Assert.AreEqual(result.Value, (int)StartingHandRanking.AKs);
         }
 
@@ -62,8 +62,8 @@ namespace PokerTests
             var content = File.ReadAllText("..\\..\\gamestateKingAceOther.json");
             gamestate = JObject.Parse(content);
             var state = new RequestStructure.GameState(gamestate);
-
-            var result = PokerPlayer.CreateRank(state);
+            var hand = PokerPlayer.CheckCardsOnHand(state);
+            var result = PokerPlayer.CreateRank(state, hand);
             Assert.AreEqual(result.Value, (int)StartingHandRanking.AKo);
         }
 
@@ -78,7 +78,8 @@ namespace PokerTests
             state.OurCards.Clear();
             state.OurCards.Add(new RequestStructure.Card("2", RequestStructure.Suit.Hearts));
             state.OurCards.Add(new RequestStructure.Card("10", RequestStructure.Suit.Clubs));
-            PokerPlayer.CreateRank(state);
+            var hand = PokerPlayer.CheckCardsOnHand(state);
+            var result = PokerPlayer.CreateRank(state, hand);
         }
     }
 }
