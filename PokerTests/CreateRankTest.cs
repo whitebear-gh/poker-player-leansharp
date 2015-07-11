@@ -14,8 +14,8 @@ namespace PokerTests
         [TestMethod]
         public void GetRankTest()
         {
-            var content = File.ReadAllText("gamestate.json");
-            gamestate = new JObject(content);
+            var content = File.ReadAllText("..\\..\\gamestate.json");
+            gamestate = JObject.Parse(content);
 
             var result = PokerPlayer.CreateRank(gamestate);
         }
