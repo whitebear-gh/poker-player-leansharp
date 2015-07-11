@@ -56,7 +56,7 @@ namespace PokerTests
         }
 
         [TestMethod]
-        public void IsKingAceOther221PointsRound()
+        public void IsKingAceOther187PointsRound()
         {
             var content = File.ReadAllText("..\\..\\gamestateKingAceOther.json");
             gamestate = JObject.Parse(content);
