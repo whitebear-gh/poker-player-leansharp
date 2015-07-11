@@ -23,19 +23,17 @@ namespace Nancy.Simple
             catch (Exception e)
             {
                 Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
+            }
+
                 return Hand.Nothing;
             }
-        }
+        
 
         public static bool  IsPair(List<RequestStructure.Card> cards)
         {
             return false;
         }
-    }
-
-    public class Card
-    {
-        public char rank;
-        public string suit;
+                
+        
     }
 }

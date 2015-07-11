@@ -24,6 +24,12 @@ namespace Nancy.Simple
         }
         public class Card
         {
+            public Card(string rank, Suit suit)
+            {
+                this.Rank = rank;
+                this.Suit = suit;
+            }
+
             public string Rank { get; set; }
             public Suit Suit { get; set; }
 
@@ -104,6 +110,12 @@ namespace Nancy.Simple
             public int Round { get; set; }
             public int BetIndex { get; set; }
             public int SmallBlind { get; set; }
+
+            public int BigBlind
+            {
+                get { return SmallBlind*2; }
+            }
+
             public int Orbits { get; set; }
             public string Dealer { get; set; }
             public List<Card> CommunityCards { get; set; }

@@ -57,7 +57,7 @@ namespace PokerTests
         }
 
         [TestMethod]
-        public void IsKingAceOther221PointsRound()
+        public void IsKingAceOther187PointsRound()
         {
             var content = File.ReadAllText("..\\..\\gamestateKingAceOther.json");
             gamestate = JObject.Parse(content);
@@ -65,6 +65,20 @@ namespace PokerTests
 
             var result = PokerPlayer.CreateRank(state);
             Assert.AreEqual(result.Value, (int)StartingHandRanking.AKo);
+        }
+
+        [TestMethod]
+        public void TestCreateRankDoesNotCrrash()
+        {
+            var content = File.ReadAllText("..\\..\\gamestateKingAceOther.json");
+            gamestate = JObject.Parse(content);
+            var state = new RequestStructure.GameState(gamestate);
+
+
+            state.OurCards.Clear();
+            state.OurCards.Add(new RequestStructure.Card("2", RequestStructure.Suit.Hearts));
+            state.OurCards.Add(new RequestStructure.Card("10", RequestStructure.Suit.Clubs));
+            PokerPlayer.CreateRank(state);
         }
     }
 }

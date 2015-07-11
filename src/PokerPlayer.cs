@@ -5,7 +5,7 @@ namespace Nancy.Simple
 {
 	public static partial class PokerPlayer
 	{
-		public static readonly string VERSION = "Gimme your hand!";
+		public static readonly string VERSION = "Default C# folding player";
 
         /// <summary>
         /// Use this method to return the value You want to bet
@@ -48,12 +48,5 @@ namespace Nancy.Simple
 		{
 			//TODO: Use this method to showdown
 		}
-
-
-
-
-       
-
 	}
 }
-

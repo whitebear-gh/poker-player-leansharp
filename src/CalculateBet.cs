@@ -8,8 +8,17 @@ namespace Nancy.Simple
     {
 
 
-        public static dynamic CalculateBet(JObject gameState, dynamic rank)
+        public static dynamic CalculateBet(JObject gameState, int? rank)
         {
+            int rankValue = 0;
+            if (rank.HasValue)
+            {
+                rankValue = rank.Value;
+            }
+            if (rank.HasValue && rank < 100)
+            {
+                return 0;
+            }
             var game = new RequestStructure.GameState(gameState);
 
             var allInPlayersCount = GetAllInPlayersCount(game);
@@ -18,7 +27,7 @@ namespace Nancy.Simple
             {
                 return GetMaxBet(game);
             }
-            if(allInPlayersCount >= 2)
+            if(allInPlayersCount > 2)
             {
                 return 0;
             }
@@ -26,38 +35,32 @@ namespace Nancy.Simple
             var currentPot = Convert.ToInt32(game.Pot);
             var maxBet = GetMaxBet(game);
 
-            double expectedGainChance = GetExpectedGainChance(maxBet, currentPot);
-            double positionFactor = GetPositionFactor(game);
+            double expectedGainChance = maxBet/currentPot;
+            double positionFactor = 1 + 1/(GetActivePlayerCount(game) - GetCurrentPosition(game) + 1);
             expectedGainChance = expectedGainChance*positionFactor;
 
             var activePlayerCount = GetActivePlayerCount(game);
 
             int actualBet = 0;
-            if (currentPot <= 5*game.CurrentBuyIn || expectedGainChance >= (1/activePlayerCount))
+            if (currentPot <= 3*game.CurrentBuyIn || expectedGainChance >= (1/activePlayerCount))
             {
-                var round = GetRound(gameState);
-
-                actualBet = new[] {maxBet, currentPot}.Max(s => s);
-                if (round > 10)
+                if (rankValue > 200)
                 {
-                    actualBet = actualBet*(round/10);
+                    actualBet = currentPot;
                 }
                 else
                 {
-                    actualBet = actualBet*(round/100);
+                    if (rankValue < 130 && game.CurrentBuyIn > game.OurPlayer.Stack * 0.15)
+                    {
+                        actualBet = 0;
+                    }
+                    else
+                    {
+                        actualBet = game.CurrentBuyIn;
+                    }
                 }
             }
             return actualBet;
-        }
-
-        private static int GetExpectedGainChance(int maxBet, int currentPot)
-        {
-            return maxBet/currentPot;
-        }
-
-        private static int GetPositionFactor(RequestStructure.GameState game)
-        {
-            return 1 + 1/(GetActivePlayerCount(game) - GetCurrentPosition(game) + 1);
         }
 
         private static int GetActivePlayerCount(RequestStructure.GameState game)
