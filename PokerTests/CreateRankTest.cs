@@ -75,8 +75,8 @@ namespace PokerTests
 
 
             state.OurCards.Clear();
-            state.OurCards.Add(new RequestStructure.Card() { Rank = "2", Suit = RequestStructure.Suit.Hearts });
-            state.OurCards.Add(new RequestStructure.Card() { Rank = "10", Suit = RequestStructure.Suit.Clubs });
+            state.OurCards.Add(new RequestStructure.Card("2", RequestStructure.Suit.Hearts));
+            state.OurCards.Add(new RequestStructure.Card("10", RequestStructure.Suit.Clubs));
             PokerPlayer.CreateRank(state);
         }
     }
