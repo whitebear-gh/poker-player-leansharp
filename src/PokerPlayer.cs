@@ -19,7 +19,7 @@ namespace Nancy.Simple
                 var des = gameState.ToObject<GameState>();
 
                 dynamic hand = CheckCardsOnHand(gameState);
-                dynamic rank = CreateRank(hand);
+                dynamic rank = CreateRank(des);
                 int bet = CalculateBet(gameState, rank);
 
                 return bet;
