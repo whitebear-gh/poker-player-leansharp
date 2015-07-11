@@ -21,7 +21,7 @@ namespace Nancy.Simple
                 var des = new RequestStructure.GameState(gameState);
 
                 Hand hand = CheckCardsOnHand(des);
-                Hand flushHand = CheckCardsForFlush(des.CommunityCards.Concat(des.OurPlayer.HoleCards).ToList());
+                
                 int? rank = CreateRank(des, hand);
                 int bet = CalculateBet(gameState, rank);
 

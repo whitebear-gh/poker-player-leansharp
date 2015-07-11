@@ -112,7 +112,7 @@ namespace PokerTests
                 new RequestStructure.Card ("J", RequestStructure.Suit.Clubs),
                 new RequestStructure.Card ("J", RequestStructure.Suit.Clubs),
                 new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
-                new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
+                new RequestStructure.Card ("A", RequestStructure.Suit.Hearts),
                 new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
             };
             var hand = PokerPlayer.CheckCardsOnHand(cardsOverall);
@@ -129,7 +129,7 @@ namespace PokerTests
             {
                 new RequestStructure.Card ("J", RequestStructure.Suit.Clubs),
                 new RequestStructure.Card ("3", RequestStructure.Suit.Clubs),
-                new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
+                new RequestStructure.Card ("A", RequestStructure.Suit.Diamonds),
                 new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
                 new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
             };
@@ -145,7 +145,7 @@ namespace PokerTests
             var cardsOverall = new List<RequestStructure.Card>
             {
                 new RequestStructure.Card ("J", RequestStructure.Suit.Clubs),
-                new RequestStructure.Card ("3", RequestStructure.Suit.Clubs),
+                new RequestStructure.Card ("3", RequestStructure.Suit.Spades),
                 new RequestStructure.Card ("J", RequestStructure.Suit.Clubs),
                 new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
                 new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
@@ -163,22 +163,14 @@ namespace PokerTests
             {
                 new RequestStructure.Card ("J", RequestStructure.Suit.Clubs),
                 new RequestStructure.Card ("3", RequestStructure.Suit.Clubs),
-                new RequestStructure.Card ("f", RequestStructure.Suit.Clubs),
-                new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
+                new RequestStructure.Card ("Q", RequestStructure.Suit.Clubs),
+                new RequestStructure.Card ("A", RequestStructure.Suit.Spades),
                 new RequestStructure.Card ("A", RequestStructure.Suit.Clubs),
             };
             var hand = PokerPlayer.CheckCardsOnHand(cardsOverall);
 
             Assert.AreEqual(hand, Hand.Pair);
         }
-
-
-
-
-
-
-
-
 
 
     }
