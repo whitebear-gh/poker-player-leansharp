@@ -20,9 +20,9 @@ namespace Nancy.Simple
                 //var des = gameState.ToObject<RequestStructure.GameState>();
                 var des = new RequestStructure.GameState(gameState);
 
-                //dynamic hand = CheckCardsOnHand(des);
+                Hand hand = CheckCardsOnHand(des);
                 Hand flushHand = CheckCardsForFlush(des.CommunityCards.Concat(des.OurPlayer.HoleCards).ToList());
-                int? rank = CreateRank(des);
+                int? rank = CreateRank(des, hand);
                 int bet = CalculateBet(gameState, rank);
 
                 return bet;
