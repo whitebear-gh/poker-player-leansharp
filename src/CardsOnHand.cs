@@ -11,15 +11,35 @@ namespace Nancy.Simple
     {
         public static Hand CheckCardsOnHand(RequestStructure.GameState gameState)
         {
+            var cards = gameState.OurCards.Concat(gameState.CommunityCards).ToList();
+            return CheckCardsOnHand(cards);
+        }
+        public static Hand CheckCardsOnHand(List<RequestStructure.Card> cards)
+        {
             try
             {
-                var cards = gameState.OurCards.Concat(gameState.CommunityCards).ToList();
-                if (IsFourOfKind(cards))
-                    return Hand.FourOfKind;
-                if (IsFullHouse(cards))
-                    return Hand.FullHouse;
-                if (IsPair(cards))
+                var cardCounts = cards.GroupBy(card => card.Rank).Select(grouping => new { Rank = grouping.Key, Count = grouping.Count() });
+                if (cardCounts.Any(arg => arg.Count == 4))
                 {
+                    return Hand.FourOfKind;
+                }
+                if (cardCounts.Any(arg => arg.Count == 3))
+                {
+                    var first = cardCounts.First(arg => arg.Count == 3);
+                    var any = cardCounts.Where(arg => arg.Rank != first.Rank).Any(arg => arg.Count == 2);
+                    if (any)
+                    {
+                        return Hand.FullHouse;
+                    }
+                    return Hand.ThreeOfKind;
+                }
+                var pairs = cardCounts.Where(arg => arg.Count == 2);
+                if (pairs.Any())
+                {
+                    if (pairs.Count() > 1)
+                    {
+                        return Hand.TwoPair;
+                    }
                     return Hand.Pair;
                 }
                 return Hand.Nothing;
@@ -29,9 +49,8 @@ namespace Nancy.Simple
                 Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
             }
 
-                return Hand.Nothing;
-            }
-        
+            return Hand.Nothing;
+        }
 
         public static bool  IsPair(List<RequestStructure.Card> cards)
         {
