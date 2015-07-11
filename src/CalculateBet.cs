@@ -16,7 +16,7 @@ namespace Nancy.Simple
             {
                 rankValue = rank.Value;
             }
-            if (rank.HasValue && rank < 100)
+            if (rank.HasValue && rank < 50)
             {
                 return 0;
             }
@@ -42,7 +42,7 @@ namespace Nancy.Simple
             {
                 return GetMaxBet(game);
             }
-            if(allInPlayersCount > 2)
+            if(allInPlayersCount > 2 && !game.CommunityCards.Any() && rankValue < 200)
             {
                 return 0;
             }
