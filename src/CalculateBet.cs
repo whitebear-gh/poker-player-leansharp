@@ -35,7 +35,7 @@ namespace Nancy.Simple
             var currentPot = Convert.ToInt32(game.Pot);
             var maxBet = GetMaxBet(game);
 
-            double expectedGainChance = 2*(maxBet/currentPot);
+            double expectedGainChance = maxBet/currentPot;
             double positionFactor = 1 + 1/(GetActivePlayerCount(game) - GetCurrentPosition(game) + 1);
             expectedGainChance = expectedGainChance*positionFactor;
 
@@ -44,21 +44,13 @@ namespace Nancy.Simple
             int actualBet = 0;
             if (currentPot <= 3*game.CurrentBuyIn || expectedGainChance >= (1/activePlayerCount))
             {
-                if (rankValue >= 350)
-                {
-                    actualBet = game.OurPlayer.Stack;
-                }
-                else if (rankValue >= 250 && game.CurrentBuyIn > game.OurPlayer.Stack * 0.15 && game.Round < 20)
-                {
-                    actualBet = 0;
-                }
-                else if (rankValue >= 250)
+                if (rankValue > 200)
                 {
                     actualBet = currentPot;
                 }
                 else
                 {
-                    if (rankValue <= 150 && game.CurrentBuyIn > game.OurPlayer.Stack * 0.15)
+                    if (rankValue < 130 && game.CurrentBuyIn > game.OurPlayer.Stack * 0.15)
                     {
                         actualBet = 0;
                     }

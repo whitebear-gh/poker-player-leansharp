@@ -1,4 +1,5 @@
 ﻿using System;
+//using System.Diagnostics.Eventing.Reader; // not available, please do not use
 using System.Collections.Generic;
 using System.Dynamic;
 using System.Dynamic;
@@ -9,40 +10,15 @@ namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
-        public static Hand CheckCardsOnHand(RequestStructure.GameState gameState)
-        {
-            var cards = gameState.OurCards.Concat(gameState.CommunityCards).ToList();
-            return CheckCardsOnHand(cards);
-        }
-        public static Hand CheckCardsOnHand(List<RequestStructure.Card> cards)
+        private static Dictionary<string, int> cardsQuantity = new Dictionary<string, int>();
+
+        public static dynamic CheckCardsOnHand(RequestStructure.GameState gameState)
         {
             try
             {
-                var cardCounts = cards.GroupBy(card => card.Rank).Select(grouping => new { Rank = grouping.Key, Count = grouping.Count() });
-                if (cardCounts.Any(arg => arg.Count == 4))
-                {
-                    return Hand.FourOfKind;
-                }
-                if (cardCounts.Any(arg => arg.Count >= 3))
-                {
-                    var first = cardCounts.First(arg => arg.Count >= 3);
-                    var any = cardCounts.Where(arg => arg.Rank != first.Rank).Any(arg => arg.Count >= 2);
-                    if (any)
-                    {
-                        return Hand.FullHouse;
-                    }
-                    return Hand.ThreeOfKind;
-                }
-                var pairs = cardCounts.Where(arg => arg.Count == 2);
-                if (pairs.Any())
-                {
-                    if (pairs.Count() > 1)
-                    {
-                        return Hand.TwoPair;
-                    }
-                    return Hand.Pair;
-                }
-                return Hand.Nothing;
+                var cardsOverall = gameState.CommunityCards.Concat(gameState.OurPlayer.HoleCards).ToList();
+                checkPairs(cardsOverall);
+
             }
             catch (Exception e)
             {
@@ -52,33 +28,23 @@ namespace Nancy.Simple
             return Hand.Nothing;
         }
 
-        public static bool  IsPair(List<RequestStructure.Card> cards)
+        private static void checkPairs(List<RequestStructure.Card> cardsOverall)
         {
-            return false;
+            var currentCardRank = cardsOverall[0].Rank;
+
+            if (cardsOverall.Count > 0)
+            {
+                if (cardsQuantity.ContainsKey(currentCardRank))
+                {
+                    cardsQuantity[currentCardRank]++;
+                    checkPairs(cardsOverall.GetRange(1, cardsOverall.Count-1));
+                }
+                else
+                {
+                    cardsQuantity.Add(currentCardRank, 0);
+                    checkPairs(cardsOverall.GetRange(1, cardsOverall.Count - 1));
+                }
+            }
         }
-
-
-        public static List<int> GetCounts(List<RequestStructure.Card> cardsOverall)
-        {
-            return cardsOverall.GroupBy(x => x.Rank).Select(x => x.Count()).OrderBy(x => x).ToList();
-        }
-
-        public static bool IsFullHouse(List<RequestStructure.Card> cardsOverall)
-        {
-            var counts = GetCounts(cardsOverall);
-
-            var atLeastTwo = counts.Where(x => x >= 2);
-            var atLeastThree = counts.Where(x => x >= 2);
-
-            return atLeastTwo.Count() >= 2 && atLeastThree.Count() >= 1;
-        }
-
-        public static bool IsFourOfKind(List<RequestStructure.Card> cardsOverall)
-        {
-            var counts = GetCounts(cardsOverall);
-
-            return counts.Any(x => x >= 4);
-        }
-        
     }
 }

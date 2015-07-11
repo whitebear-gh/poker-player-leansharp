@@ -1,5 +1,6 @@
 ﻿﻿using System;
-using Newtonsoft.Json.Linq;
+﻿using System.Linq;
+﻿using Newtonsoft.Json.Linq;
 
 namespace Nancy.Simple
 {
@@ -19,8 +20,9 @@ namespace Nancy.Simple
                 //var des = gameState.ToObject<RequestStructure.GameState>();
                 var des = new RequestStructure.GameState(gameState);
 
-                var hand = CheckCardsOnHand(des);
-                int? rank = CreateRank(des,hand);
+                Hand hand = CheckCardsOnHand(des);
+                Hand flushHand = CheckCardsForFlush(des.CommunityCards.Concat(des.OurPlayer.HoleCards).ToList());
+                int? rank = CreateRank(des, hand);
                 int bet = CalculateBet(gameState, rank);
 
                 return bet;
