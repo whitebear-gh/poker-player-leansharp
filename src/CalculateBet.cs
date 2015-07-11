@@ -58,7 +58,7 @@ namespace Nancy.Simple
                 }
                 else
                 {
-                    if (rankValue <= 150 && game.CurrentBuyIn > game.OurPlayer.Stack * 0.15)
+                    if (rankValue <= 130 && game.CurrentBuyIn > game.OurPlayer.Stack * 0.15)
                     {
                         actualBet = 0;
                     }
