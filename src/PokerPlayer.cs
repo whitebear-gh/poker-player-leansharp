@@ -25,6 +25,7 @@ namespace Nancy.Simple
             {
                 dynamic hand = CheckCardsOnHand(gameState);
                 dynamic rank = CreateRank(hand);
+
                 int bet = CalculateBet(gameState, rank);
 
                 return bet;
@@ -33,8 +34,18 @@ namespace Nancy.Simple
             {
                 Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
                 Console.WriteLine("Gamestate = " + gameState.ToString());
-                
-                return 200;
+
+                // try to calculate bet without rank
+                try
+                {
+                    int bet = CalculateBet(gameState, null);
+                    return bet;
+                }
+                catch (Exception e2)
+                {
+                    Console.WriteLine("Could not calculate bet without rank: " + e2.Message + "\n\t" + e2.StackTrace);
+                    return 200;
+                }
             }
 		}
 
