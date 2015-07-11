@@ -27,6 +27,7 @@ namespace Nancy.Simple
             catch (Exception e)
             {
                 Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
+                Console.WriteLine("Gamestate = " + gameState.ToString());
                 
                 return 200;
             }
