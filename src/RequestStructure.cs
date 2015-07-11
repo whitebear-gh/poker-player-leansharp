@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 namespace Nancy.Simple
@@ -46,7 +47,7 @@ namespace Nancy.Simple
         {
             public GameState(JObject gameState)
             {
-                TournamentId = gameState["players"].ToString();
+                Players = JsonConvert.DeserializeObject<List<Player>>(gameState["players"].ToString());
                 TournamentId = gameState["tournament_id"].ToString();
                 GameId = gameState["game_id"].ToString();
                 Round = gameState["round"].ToString();
@@ -54,7 +55,7 @@ namespace Nancy.Simple
                 SmallBlind = gameState["small_blind"].ToString();
                 Orbits = gameState["orbits"].ToString();
                 Dealer = gameState["dealer"].ToString();
-                //CommunityCards = gameState["community_cards"].ToString();
+                CommunityCards = JsonConvert.DeserializeObject<List<Card>>(gameState["community_cards"].ToString());
                 CurrentBuyIn = gameState["current_buy_in"].ToString();
                 Pot = gameState["pot"].ToString();
                 Pot = gameState["in_action"].ToString();
