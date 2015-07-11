@@ -7,7 +7,7 @@ namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
-        public static dynamic CheckCardsOnHand(JObject gameState)
+        public static Hand CheckCardsOnHand(JObject gameState)
         {
             try
             {
