@@ -10,6 +10,7 @@ namespace Nancy.Simple
 
         public static dynamic CalculateBet(JObject gameState, int? rank)
         {
+
             int rankValue = 0;
             if (rank.HasValue)
             {
@@ -19,7 +20,21 @@ namespace Nancy.Simple
             {
                 return 0;
             }
+
             var game = new RequestStructure.GameState(gameState);
+            var currentPot = Convert.ToInt32(game.Pot);
+            try
+            {
+                var funnyPokerBot = game.Players.Single(p => p.Name == "FunnyPokerBot");
+                if (funnyPokerBot.Bet > currentPot*5 && funnyPokerBot.Status == RequestStructure.PlayerStatus.Active && !game.CommunityCards.Any())
+                {
+                    return game.OurPlayer.Stack;
+                }
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+            }
 
             var allInPlayersCount = GetAllInPlayersCount(game);
 
@@ -32,7 +47,6 @@ namespace Nancy.Simple
                 return 0;
             }
 
-            var currentPot = Convert.ToInt32(game.Pot);
             var maxBet = GetMaxBet(game);
 
             double expectedGainChance = maxBet/currentPot;
