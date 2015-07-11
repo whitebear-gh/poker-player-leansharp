@@ -6,10 +6,10 @@ namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
-        public static int? CreateRank(JObject gameState)
+
+        public static int? CreateRank(RequestStructure.GameState gameState)
         {
-            var state = new RequestStructure.GameState(gameState);
-            bool isFirstRound = !state.CommunityCards.Any();
+            var isFirstRound = !gameState.CommunityCards.Any();
 
             if (isFirstRound)
             {
@@ -18,16 +18,12 @@ namespace Nancy.Simple
             return null;
         }
 
-        private static int FirstRound(JObject gameState)
+        private static int FirstRound(RequestStructure.GameState gameState)
         {
-            var Cards = ((JArray)gameState["hole_cards"]).Select(hc =>
-                new
-                {
-                    Rank = hc["rank"].ToString(),
-                    Suit = hc["suit"].ToString()
-                });
-            var firstCard = Cards.First();
-            var secondCard = Cards.Last();
+            var cards = gameState.OurPlayer.HoleCards;
+
+            var firstCard = cards.First();
+            var secondCard = cards.Last();
 
             var firstCardRank = firstCard.Rank;
             var secondCardRank = secondCard.Rank;
@@ -49,7 +45,7 @@ namespace Nancy.Simple
             var areSameSuit = firstCardSuit == secondCardSuit;
 
             var rank = firstCardRank + secondCardRank;
-            rank = isPair ? rank : (areSameSuit ? "s" : "o");
+            rank = isPair ? rank : rank + (areSameSuit ? "s" : "o");
 
             var rankValue = 0;
 
@@ -60,7 +56,7 @@ namespace Nancy.Simple
             catch (Exception ex)
             {
                 rank = secondCardRank + firstCardRank;
-                rank = isPair ? rank : (areSameSuit ? "s" : "o");
+                rank = isPair ? rank : rank + (areSameSuit ? "s" : "o");
                 rankValue = (int)Enum.Parse(typeof(StartingHandRanking), rank);
             }
 

@@ -57,6 +57,7 @@
     <Compile Include="GameStateTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="CardsOnHandTests.cs" />
+    <Compile Include="CreateRankTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="gamestate.json" />
