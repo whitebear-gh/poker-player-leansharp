@@ -2,8 +2,13 @@
 
 namespace Nancy.Simple
 {
-	public static class PokerPlayer
+	public static partial class PokerPlayer
 	{
+	    public enum Hand
+	    {
+	        Nothing,
+            Pair
+	    }
 		public static readonly string VERSION = "Default C# folding player";
 
 		public static int BetRequest(JObject gameState)
@@ -16,6 +21,12 @@ namespace Nancy.Simple
 		{
 			//TODO: Use this method to showdown
 		}
+
+
+
+
+       
+
 	}
 }
 
