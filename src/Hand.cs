@@ -6,9 +6,9 @@
 
         Nothing = 0,
         HighCard = 5,
-        Pair = 50,
-        TwoPair = 100,
-        ThreeOfKind = 200,
+        Pair = 150,
+        TwoPair = 200,
+        ThreeOfKind = 250,
         Straight = 300,
         Flush = 350,
         FullHouse = 400,
