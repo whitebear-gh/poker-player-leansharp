@@ -6,7 +6,7 @@ namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
-        public static dynamic CreateRank(JObject gameState)
+        public static int? CreateRank(JObject gameState)
         {
             var state = new RequestStructure.GameState(gameState);
             bool isFirstRound = !state.CommunityCards.Any();
