@@ -23,18 +23,17 @@ namespace Nancy.Simple
                 return 0;
             }
 
-
             var currentPot = Convert.ToInt32(game.Pot);
             var maxBet = GetMaxBet(game);
 
-            // ReSharper disable once PossibleLossOfFraction
-            double effective = maxBet/(currentPot/2);
+            double expectedGainChance = maxBet/currentPot;
+            double positionFactor = 1 + 1/(GetActivePlayerCount(game) - GetCurrentPosition(game) + 1);
+            expectedGainChance = expectedGainChance*positionFactor;
 
             var activePlayerCount = GetActivePlayerCount(game);
 
             int actualBet = 0;
-            // ReSharper disable once PossibleLossOfFraction
-            if (effective >= (1/activePlayerCount))
+            if (expectedGainChance >= (1/activePlayerCount))
             {
                 var round = GetRound(gameState);
 
@@ -66,16 +65,41 @@ namespace Nancy.Simple
             return ((int) gameState["round"]);
         }
 
-        private static int GetCurrentPot(JObject gameState)
-        {
-            int currentPot = (int) gameState["pot"];
-            return currentPot;
-        }
-
         private static int GetMaxBet(RequestStructure.GameState game)
         {
             var maxBet = game.Players.Max(p => (int) p.Bet);
             return maxBet;
+        }
+
+        private static int GetCurrentPosition(RequestStructure.GameState game)
+        {
+            var activePlayerCount = GetActivePlayerCount(game);
+            var dealerId = Convert.ToInt32(game.Dealer);
+            if (game.OurPlayer.Id == dealerId)
+            {
+                return activePlayerCount;
+            }
+            if (game.OurPlayer.Id < dealerId)
+            {
+                var tmpPosition = activePlayerCount;
+                for (int i = dealerId - 1; i != game.OurPlayer.Id && i > 0; i--)
+                {
+                    if (i == game.OurPlayer.Id) return tmpPosition;
+                    if (game.Players[i].Status == RequestStructure.PlayerStatus.Active) tmpPosition -= 1;
+                }
+                return tmpPosition;
+            }
+            else
+            {
+
+                var tmpPosition = 1;
+                for (int i = dealerId + 1; i < game.Players.Count; i++)
+                {
+                    if(i == game.OurPlayer.Id) return tmpPosition;
+                    if (game.Players[i].Status == RequestStructure.PlayerStatus.Active) tmpPosition += 1;
+                }
+                return tmpPosition;
+            }
         }
     }
 }
