@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Nancy.Simple
@@ -7,7 +8,9 @@ namespace Nancy.Simple
     {
         public static dynamic CreateRank(JObject gameState)
         {
-            if (gameState.round == 0)
+            var round = (int)((JArray)gameState["round"]);
+
+            if (round == 0)
             {
                 return FirstRound(gameState);
             }
@@ -16,36 +19,48 @@ namespace Nancy.Simple
 
         private static int FirstRound(JObject gameState)
         {
-            var firstCard = gameState.hole_cards.First();
-            var secondCard = gameState.hole_cards.Last();
+            var Cards = ((JArray)gameState["hole_cards"]).Select(hc =>
+                new
+                {
+                    Rank = hc["rank"].ToString(),
+                    Suit = hc["suit"].ToString()
+                });
+            var firstCard = Cards.First();
+            var secondCard = Cards.Last();
+
+            var firstCardRank = firstCard.Rank;
+            var secondCardRank = secondCard.Rank;
+
+            var firstCardSuit = firstCard.Suit;
+            var secondCardSuit = secondCard.Suit;
 
             var numberRank = 0;
-            if(int.TryParse(firstCard.rank, out numberRank))
+            if (int.TryParse(firstCardRank, out numberRank))
             {
-                firstCard.rank = ((NumberToString)numberRank).ToString();
+                firstCardRank = ((NumberToString)numberRank).ToString();
             }
-            if(int.TryParse(secondCard.rank, out numberRank))
+            if (int.TryParse(secondCardRank, out numberRank))
             {
-                secondCard.rank = ((NumberToString)numberRank).ToString();
+                secondCardRank = ((NumberToString)numberRank).ToString();
             }
-            
-            var isPair = firstCard.rank == secondCard.rank;
-            var areSameSuit = firstCard.suit == secondCard.suit;
-            
-            var rank = firstCard.rank + secondCard.rank;
+
+            var isPair = firstCardRank == secondCardRank;
+            var areSameSuit = firstCardSuit == secondCardSuit;
+
+            var rank = firstCardRank + secondCardRank;
             rank = isPair ? rank : (areSameSuit ? "s" : "o");
 
             var rankValue = 0;
 
             try
             {
-                rankValue = (int)((StartingHandRanking) rank);
+                rankValue = (int)Enum.Parse(typeof(StartingHandRanking), rank);
             }
             catch (Exception ex)
             {
-                rank = secondCard.rank + firstCard.rank;
+                rank = secondCardRank + firstCardRank;
                 rank = isPair ? rank : (areSameSuit ? "s" : "o");
-                rankValue = (int)((StartingHandRanking) rank);
+                rankValue = (int)Enum.Parse(typeof(StartingHandRanking), rank);
             }
 
             return rankValue;
