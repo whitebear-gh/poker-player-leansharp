@@ -1,3 +1,4 @@
+
 ﻿using System;
 using Newtonsoft.Json.Linq;
 
@@ -16,10 +17,10 @@ namespace Nancy.Simple
 		{
             try
             {
-                var des = gameState.ToObject<GameState>();
+                var des = gameState.ToObject<RequestStructure.GameState>();
 
                 dynamic hand = CheckCardsOnHand(gameState);
-                dynamic rank = CreateRank(des);
+                dynamic rank = CreateRank(gameState);
                 int bet = CalculateBet(gameState, rank);
 
                 return bet;
@@ -45,4 +46,3 @@ namespace Nancy.Simple
 
 	}
 }
-
