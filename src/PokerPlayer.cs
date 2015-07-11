@@ -19,8 +19,8 @@ namespace Nancy.Simple
                 //var des = gameState.ToObject<RequestStructure.GameState>();
                 var des = new RequestStructure.GameState(gameState);
 
-               // var hand = CheckCardsOnHand(gameState);
-                int? rank = CreateRank(gameState);
+                dynamic hand = CheckCardsOnHand(gameState);
+                int? rank = CreateRank(des);
                 int bet = CalculateBet(gameState, rank);
 
                 return bet;
