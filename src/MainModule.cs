@@ -26,6 +26,7 @@ namespace Nancy.Simple
 				{
 					var json = JObject.Parse (form ["game_state"]);
 					var bet = PokerPlayer.BetRequest (json).ToString ();
+                    Console.WriteLine("Bet = " + bet);
 					var betBytes = Encoding.UTF8.GetBytes (bet);
 					var response = new Response {
 						ContentType = "text/plain",
