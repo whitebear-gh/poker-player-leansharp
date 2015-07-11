@@ -57,6 +57,7 @@ namespace Nancy.Simple
                 //CommunityCards = gameState["community_cards"].ToString();
                 CurrentBuyIn = gameState["current_buy_in"].ToString();
                 Pot = gameState["pot"].ToString();
+                Pot = gameState["in_action"].ToString();
             }
             public List<Player> Players { get; set; }
 
@@ -70,6 +71,7 @@ namespace Nancy.Simple
             public List<Card> CommunityCards { get; set; }
             public string CurrentBuyIn { get; set; }
             public string Pot { get; set; }
+            public string InAction { get; set; }
             
   //          "tournament_id":"550d1d68cd7bd10003000003",
   //"game_id":"550da1cb2d909006e90004b1",
