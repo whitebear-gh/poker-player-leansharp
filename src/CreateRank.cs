@@ -13,19 +13,14 @@ namespace Nancy.Simple
 
             if (isFirstRound)
             {
-                return FirstRound(gameState);
+                return FirstRound(state);
             }
             return null;
         }
 
-        private static int FirstRound(JObject gameState)
+        private static int FirstRound(RequestStructure.GameState gameState)
         {
-            var Cards = ((JArray)gameState["hole_cards"]).Select(hc =>
-                new
-                {
-                    Rank = hc["rank"].ToString(),
-                    Suit = hc["suit"].ToString()
-                });
+            var Cards = gameState.OurCards;
             var firstCard = Cards.First();
             var secondCard = Cards.Last();
 
