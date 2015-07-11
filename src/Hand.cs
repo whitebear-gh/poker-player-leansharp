@@ -13,7 +13,7 @@
         Flush = 350,
         FullHouse = 400,
         FourOfKind = 450,
-        StraightFlush = 500
-
+        StraightFlush = 500,
+        
     }
 }
