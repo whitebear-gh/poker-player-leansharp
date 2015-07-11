@@ -33,7 +33,29 @@ namespace Nancy.Simple
         {
             return false;
         }
-                
+
+
+        public static List<int> GetCounts(List<RequestStructure.Card> cardsOverall)
+        {
+            return cardsOverall.GroupBy(x => x.Rank).Select(x => x.Count()).OrderBy(x => x).ToList();
+        }
+
+        public static bool IsFullHouse(List<RequestStructure.Card> cardsOverall)
+        {
+            var counts = GetCounts(cardsOverall);
+
+            var atLeastTwo = counts.Where(x => x >= 2);
+            var atLeastThree = counts.Where(x => x >= 2);
+
+            return atLeastTwo.Count() >= 2 && atLeastThree.Count() >= 1;
+        }
+
+        public static bool IsFourOfKind(List<RequestStructure.Card> cardsOverall)
+        {
+            var counts = GetCounts(cardsOverall);
+
+            return counts.Any(x => x >= 4);
+        }
         
     }
 }
