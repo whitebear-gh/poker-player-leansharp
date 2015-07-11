@@ -24,6 +24,12 @@ namespace Nancy.Simple
         }
         public class Card
         {
+            public Card(string rank, Suit suit)
+            {
+                this.Rank = rank;
+                this.Suit = suit;
+            }
+
             public string Rank { get; set; }
             public Suit Suit { get; set; }
 

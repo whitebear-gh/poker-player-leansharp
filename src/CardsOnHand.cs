@@ -11,27 +11,15 @@ namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
-        private static Dictionary<string, int> cardsPower = new Dictionary<string, int>();
+        private static Dictionary<string, int> cardsQuantity = new Dictionary<string, int>();
 
         public static dynamic CheckCardsOnHand(RequestStructure.GameState gameState)
         {
             try
             {
-                var cardsOverall = gameState.CommunityCards.Concat(gameState.OurPlayer.HoldCards).ToList();
+                var cardsOverall = gameState.CommunityCards.Concat(gameState.OurPlayer.HoleCards).ToList();
+                checkPairs(cardsOverall);
 
-                switch (gameState.CommunityCards.Count)
-                {
-                    case 3:
-                        checkPairs(3, cardsOverall);
-                        break;
-
-                    case 5:
-                        checkPairs(5, cardsOverall);
-                        break;
-
-                    default:
-                        return Hand.Nothing;
-                }
             }
             catch (Exception e)
             {
@@ -41,19 +29,21 @@ namespace Nancy.Simple
             return Hand.Nothing;
         }
 
-        private static void checkPairs(int cardsCount, List<RequestStructure.Card> cardsOverall)
+        private static void checkPairs(List<RequestStructure.Card> cardsOverall)
         {
             var currentCardRank = cardsOverall[0].Rank;
 
-            if (cardsCount > 0)
+            if (cardsOverall.Count > 0)
             {
-                if (cardsPower.ContainsKey(currentCardRank))
+                if (cardsQuantity.ContainsKey(currentCardRank))
                 {
-                    cardsPower[currentCardRank]++;
+                    cardsQuantity[currentCardRank]++;
+                    checkPairs(cardsOverall.GetRange(1, cardsOverall.Count-1));
                 }
                 else
                 {
-                    cardsPower.Add(currentCardRank, Rank.GetCardValue(currentCardRank));
+                    cardsQuantity.Add(currentCardRank, 0);
+                    checkPairs(cardsOverall.GetRange(1, cardsOverall.Count - 1));
                 }
             }
         }
