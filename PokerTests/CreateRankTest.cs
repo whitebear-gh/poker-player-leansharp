@@ -1,4 +1,5 @@
-﻿using System;
+﻿#if !__MonoCS__
+using System;
 using System.IO;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Nancy.Simple;
@@ -67,3 +68,4 @@ namespace PokerTests
         }
     }
 }
+#endif
