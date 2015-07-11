@@ -13,7 +13,7 @@ namespace Nancy.Simple
 
             if (isFirstRound)
             {
-                return (int)((FirstRound(gameState)) * 1.5);
+                return (int)((FirstRound(gameState)) * 1.3);
             }
 
                 return (int)hand;
