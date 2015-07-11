@@ -76,6 +76,7 @@
     <Compile Include="MainModule.cs" />
     <Compile Include="App.cs" />
     <Compile Include="PokerPlayer.cs" />
+    <Compile Include="RequestStructure.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="app.config">
