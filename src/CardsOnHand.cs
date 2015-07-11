@@ -1,29 +1,51 @@
 ﻿using System;
+//using System.Diagnostics.Eventing.Reader; // not available, please do not use
+using System.Collections.Generic;
+using System.Diagnostics.Eventing.Reader;
 using System.Dynamic;
 using System.Dynamic;
+using System.Linq;
 using Newtonsoft.Json.Linq;
 
 namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
-        public static Hand CheckCardsOnHand(JObject gameState)
+        private static Dictionary<string, int> cardsQuantity = new Dictionary<string, int>();
+
+        public static dynamic CheckCardsOnHand(RequestStructure.GameState gameState)
         {
             try
             {
-                return Hand.Nothing;
+                var cardsOverall = gameState.CommunityCards.Concat(gameState.OurPlayer.HoleCards).ToList();
+                checkPairs(cardsOverall);
+
             }
             catch (Exception e)
             {
                 Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
-                return Hand.Nothing;
+            }
+
+            return Hand.Nothing;
+        }
+
+        private static void checkPairs(List<RequestStructure.Card> cardsOverall)
+        {
+            var currentCardRank = cardsOverall[0].Rank;
+
+            if (cardsOverall.Count > 0)
+            {
+                if (cardsQuantity.ContainsKey(currentCardRank))
+                {
+                    cardsQuantity[currentCardRank]++;
+                    checkPairs(cardsOverall.GetRange(1, cardsOverall.Count-1));
+                }
+                else
+                {
+                    cardsQuantity.Add(currentCardRank, 0);
+                    checkPairs(cardsOverall.GetRange(1, cardsOverall.Count - 1));
+                }
             }
         }
-    }
-
-    public class Card
-    {
-        public char rank;
-        public string suit;
     }
 }
