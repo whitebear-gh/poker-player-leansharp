@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Diagnostics.Eventing.Reader;
 using System.Dynamic;
 using System.Dynamic;
@@ -13,12 +13,10 @@ namespace Nancy.Simple
             try
             {
                 return Hand.Nothing;
-                //var des = (Card) Newtonsoft.Json.JsonConvert.DeserializeObject(response, typeof (Card));
-
             }
             catch (Exception e)
             {
-                Console.WriteLine("Error during card checking in hands:\n"+e.Message);
+                Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
                 return Hand.Nothing;
             }
         }

@@ -7,8 +7,6 @@ namespace Nancy.Simple
 	{
 		public static readonly string VERSION = "Default C# folding player";
 
-
-
         /// <summary>
         /// Use this method to return the value You want to bet
         /// </summary>
@@ -18,6 +16,8 @@ namespace Nancy.Simple
 		{
             try
             {
+                var des = gameState.ToObject<GameState>();
+
                 dynamic hand = CheckCardsOnHand(gameState);
                 dynamic rank = CreateRank(hand);
                 int bet = CalculateBet(gameState, rank);
