@@ -8,9 +8,10 @@ namespace Nancy.Simple
     {
         public static dynamic CreateRank(JObject gameState)
         {
-            var round = (int)((JArray)gameState["round"]);
+            var state = new RequestStructure.GameState(gameState);
+            bool isFirstRound = !state.CommunityCards.Any();
 
-            if (round == 0)
+            if (isFirstRound)
             {
                 return FirstRound(gameState);
             }
