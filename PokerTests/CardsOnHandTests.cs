@@ -22,7 +22,91 @@ namespace PokerTests
 
             
         }
+
+
+        [TestMethod]
+        public void IsFullHouseTest()
+        {
+            Assert.IsTrue(PokerPlayer.IsFullHouse(
+                new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("2", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Spades),
+                    new RequestStructure.Card("2", RequestStructure.Suit.Hearts)
+                }));
+
+            Assert.IsTrue(PokerPlayer.IsFullHouse(
+                new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("1", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("2", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("4", RequestStructure.Suit.Spades),
+                    new RequestStructure.Card("4", RequestStructure.Suit.Hearts)
+                }));
+
+            Assert.IsFalse(PokerPlayer.IsFullHouse(
+                    new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("2", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Spades),
+                }));
+
+            Assert.IsFalse(PokerPlayer.IsFullHouse(
+                    new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Spades),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Spades),
+                }));
+        }
+
+        [TestMethod]
+        public void IsFourOfKindTest()
+        {
+            Assert.IsTrue(PokerPlayer.IsFourOfKind(
+                new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Spades),
+                    new RequestStructure.Card("2", RequestStructure.Suit.Hearts)
+                }));
+
+            Assert.IsTrue(PokerPlayer.IsFourOfKind(
+                new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Spades),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Hearts)
+                }));
+
+            Assert.IsFalse(PokerPlayer.IsFourOfKind(
+                    new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("2", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Spades),
+                }));
+
+            Assert.IsFalse(PokerPlayer.IsFourOfKind(
+                    new List<RequestStructure.Card>() {
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Diamonds),
+                    new RequestStructure.Card("3", RequestStructure.Suit.Clubs),
+                    new RequestStructure.Card("2", RequestStructure.Suit.Spades),
+                    new RequestStructure.Card("2", RequestStructure.Suit.Spades),
+                }));
+        }
     }
+
+
+
 }
 
 #endif

@@ -14,6 +14,10 @@ namespace Nancy.Simple
             try
             {
                 var cards = gameState.OurCards.Concat(gameState.CommunityCards).ToList();
+                if (IsFourOfKind(cards))
+                    return Hand.FourOfKind;
+                if (IsFullHouse(cards))
+                    return Hand.FullHouse;
                 if (IsPair(cards))
                 {
                     return Hand.Pair;
