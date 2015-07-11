@@ -35,7 +35,7 @@ namespace Nancy.Simple
             var currentPot = Convert.ToInt32(game.Pot);
             var maxBet = GetMaxBet(game);
 
-            double expectedGainChance = maxBet/currentPot;
+            double expectedGainChance = 2*(maxBet/currentPot);
             double positionFactor = 1 + 1/(GetActivePlayerCount(game) - GetCurrentPosition(game) + 1);
             expectedGainChance = expectedGainChance*positionFactor;
 
