@@ -1,4 +1,4 @@
-﻿#if !MONO
+﻿#if !__MonoCS__
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -26,6 +26,10 @@ namespace Tests
             var content = File.ReadAllText("..\\..\\gamestate.json");
             gamestate = JObject.Parse(content);
             var state = new RequestStructure.GameState(gamestate);
+
+            var cards = state.CommunityCards;
+
+            Assert.IsNotNull(state);
 
         }
     }
