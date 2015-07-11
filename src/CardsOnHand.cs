@@ -1,7 +1,6 @@
 ﻿using System;
 //using System.Diagnostics.Eventing.Reader; // not available, please do not use
 using System.Collections.Generic;
-using System.Diagnostics.Eventing.Reader;
 using System.Dynamic;
 using System.Dynamic;
 using System.Linq;
