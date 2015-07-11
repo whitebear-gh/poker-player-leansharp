@@ -6,27 +6,23 @@ namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
-        public static dynamic CreateRank(JObject gameState)
+        public static int? CreateRank(RequestStructure.GameState gameState)
         {
-            var round = (int)((JArray)gameState["round"]);
+            var isFirstRound = !gameState.CommunityCards.Any();
 
-            if (round == 0)
+            if (isFirstRound)
             {
                 return FirstRound(gameState);
             }
             return null;
         }
 
-        private static int FirstRound(JObject gameState)
+        private static int FirstRound(RequestStructure.GameState gameState)
         {
-            var Cards = ((JArray)gameState["hole_cards"]).Select(hc =>
-                new
-                {
-                    Rank = hc["rank"].ToString(),
-                    Suit = hc["suit"].ToString()
-                });
-            var firstCard = Cards.First();
-            var secondCard = Cards.Last();
+            var cards = gameState.OurCards;
+
+            var firstCard = cards.First();
+            var secondCard = cards.Last();
 
             var firstCardRank = firstCard.Rank;
             var secondCardRank = secondCard.Rank;
