@@ -23,10 +23,10 @@ namespace Nancy.Simple
                 {
                     return Hand.FourOfKind;
                 }
-                if (cardCounts.Any(arg => arg.Count == 3))
+                if (cardCounts.Any(arg => arg.Count >= 3))
                 {
-                    var first = cardCounts.First(arg => arg.Count == 3);
-                    var any = cardCounts.Where(arg => arg.Rank != first.Rank).Any(arg => arg.Count == 2);
+                    var first = cardCounts.First(arg => arg.Count >= 3);
+                    var any = cardCounts.Where(arg => arg.Rank != first.Rank).Any(arg => arg.Count >= 2);
                     if (any)
                     {
                         return Hand.FullHouse;
