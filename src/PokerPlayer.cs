@@ -31,7 +31,7 @@ namespace Nancy.Simple
             {
                 Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
                 
-                return 1000;
+                return 200;
             }
 		}
 
