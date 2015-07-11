@@ -5,14 +5,7 @@ namespace Nancy.Simple
 {
 	public static partial class PokerPlayer
 	{
-	    public enum Hand
-	    {
-	        Nothing,
-            Pair
-	    }
 		public static readonly string VERSION = "Default C# folding player";
-
-
 
         /// <summary>
         /// Use this method to return the value You want to bet
@@ -23,6 +16,8 @@ namespace Nancy.Simple
 		{
             try
             {
+                var des = gameState.ToObject<GameState>();
+
                 dynamic hand = CheckCardsOnHand(gameState);
                 dynamic rank = CreateRank(hand);
                 int bet = CalculateBet(gameState, rank);
@@ -32,6 +27,7 @@ namespace Nancy.Simple
             catch (Exception e)
             {
                 Console.WriteLine("Error occured: " + e.Message + "\n\t" + e.StackTrace);
+                Console.WriteLine("Gamestate = " + gameState.ToString());
                 
                 return 200;
             }
