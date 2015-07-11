@@ -104,6 +104,12 @@ namespace Nancy.Simple
             public int Round { get; set; }
             public int BetIndex { get; set; }
             public int SmallBlind { get; set; }
+
+            public int BigBlind
+            {
+                get { return SmallBlind*2; }
+            }
+
             public int Orbits { get; set; }
             public string Dealer { get; set; }
             public List<Card> CommunityCards { get; set; }

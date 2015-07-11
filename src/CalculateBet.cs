@@ -8,8 +8,12 @@ namespace Nancy.Simple
     {
 
 
-        public static dynamic CalculateBet(JObject gameState, dynamic rank)
+        public static dynamic CalculateBet(JObject gameState, int? rank)
         {
+            if (rank.HasValue && rank < 100)
+            {
+                return 0;
+            }
             var game = new RequestStructure.GameState(gameState);
 
             var allInPlayersCount = GetAllInPlayersCount(game);
@@ -33,19 +37,20 @@ namespace Nancy.Simple
             var activePlayerCount = GetActivePlayerCount(game);
 
             int actualBet = 0;
-            if (currentPot <= 5*game.CurrentBuyIn || expectedGainChance >= (1/activePlayerCount))
+            if (currentPot <= 3*game.CurrentBuyIn || expectedGainChance >= (1/activePlayerCount))
             {
-                var round = GetRound(gameState);
-
-                actualBet = new[] {maxBet, currentPot}.Max(s => s);
-                if (round > 10)
-                {
-                    actualBet = actualBet*(round/10);
-                }
-                else
-                {
-                    actualBet = actualBet*(round/100);
-                }
+//                var round = GetRound(gameState);
+//
+//                actualBet = new[] {maxBet, game.CurrentBuyIn}.Max(s => s);
+//                if (round > 10)
+//                {
+//                    actualBet = actualBet*(round/10);
+//                }
+//                else
+//                {
+//                    actualBet = actualBet*(round/100);
+//                }
+                actualBet = game.CurrentBuyIn;
             }
             return actualBet;
         }
