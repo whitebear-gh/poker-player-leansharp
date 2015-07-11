@@ -58,6 +58,12 @@ namespace Tests
             Assert.IsTrue(player.Stack== 1590);
             Assert.IsTrue(player.Bet== 80);
 
+            var holeCards = player.HoleCards;
+            Assert.AreEqual(holeCards.Count, 2);
+            var fCard = holeCards.First();
+            Assert.AreEqual(fCard.Rank, "6");
+            Assert.AreEqual(fCard.Suit, RequestStructure.Suit.Hearts);
+
             var ourPlayer = state.OurPlayer;
             Assert.AreEqual(ourPlayer.Name,"Bob");
 

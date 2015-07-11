@@ -6,6 +6,7 @@ namespace Nancy.Simple
 {
     public static partial class PokerPlayer
     {
+
         public static int? CreateRank(RequestStructure.GameState gameState)
         {
             var isFirstRound = !gameState.CommunityCards.Any();
@@ -19,7 +20,7 @@ namespace Nancy.Simple
 
         private static int FirstRound(RequestStructure.GameState gameState)
         {
-            var cards = gameState.OurCards;
+            var cards = gameState.OurPlayer.HoleCards;
 
             var firstCard = cards.First();
             var secondCard = cards.Last();
@@ -44,7 +45,7 @@ namespace Nancy.Simple
             var areSameSuit = firstCardSuit == secondCardSuit;
 
             var rank = firstCardRank + secondCardRank;
-            rank = isPair ? rank : (areSameSuit ? "s" : "o");
+            rank = isPair ? rank : rank + (areSameSuit ? "s" : "o");
 
             var rankValue = 0;
 
@@ -55,7 +56,7 @@ namespace Nancy.Simple
             catch (Exception ex)
             {
                 rank = secondCardRank + firstCardRank;
-                rank = isPair ? rank : (areSameSuit ? "s" : "o");
+                rank = isPair ? rank : rank + (areSameSuit ? "s" : "o");
                 rankValue = (int)Enum.Parse(typeof(StartingHandRanking), rank);
             }
 
