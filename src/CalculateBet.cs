@@ -18,7 +18,7 @@ namespace Nancy.Simple
             {
                 return GetMaxBet(game);
             }
-            if(allInPlayersCount > 2)
+            if(allInPlayersCount >= 2)
             {
                 return 0;
             }
@@ -26,14 +26,14 @@ namespace Nancy.Simple
             var currentPot = Convert.ToInt32(game.Pot);
             var maxBet = GetMaxBet(game);
 
-            double expectedGainChance = maxBet/currentPot;
-            double positionFactor = 1 + 1/(GetActivePlayerCount(game) - GetCurrentPosition(game) + 1);
+            double expectedGainChance = GetExpectedGainChance(maxBet, currentPot);
+            double positionFactor = GetPositionFactor(game);
             expectedGainChance = expectedGainChance*positionFactor;
 
             var activePlayerCount = GetActivePlayerCount(game);
 
             int actualBet = 0;
-            if (expectedGainChance >= (1/activePlayerCount))
+            if (currentPot <= 5*game.CurrentBuyIn || expectedGainChance >= (1/activePlayerCount))
             {
                 var round = GetRound(gameState);
 
@@ -48,6 +48,16 @@ namespace Nancy.Simple
                 }
             }
             return actualBet;
+        }
+
+        private static int GetExpectedGainChance(int maxBet, int currentPot)
+        {
+            return maxBet/currentPot;
+        }
+
+        private static int GetPositionFactor(RequestStructure.GameState game)
+        {
+            return 1 + 1/(GetActivePlayerCount(game) - GetCurrentPosition(game) + 1);
         }
 
         private static int GetActivePlayerCount(RequestStructure.GameState game)
