@@ -74,6 +74,7 @@
     <Compile Include="CardsOnHand.cs" />
     <Compile Include="Hand.cs" />
     <Compile Include="NumberToString.cs" />
+    <Compile Include="Rank.cs" />
     <Compile Include="RequestStructure.cs" />
     <Compile Include="StartingHandRanking.cs" />
     <Compile Include="CreateRank.cs" />
