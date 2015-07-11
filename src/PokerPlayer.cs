@@ -23,7 +23,9 @@ namespace Nancy.Simple
 		{
             try
             {
-                int bet = CalculateBet();
+                dynamic hand = CheckCardsOnHand(gameState);
+                dynamic rank = CreateRank(hand);
+                int bet = CalculateBet(gameState, rank);
 
                 return bet;
             }
