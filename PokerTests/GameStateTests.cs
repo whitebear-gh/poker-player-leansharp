@@ -58,6 +58,8 @@ namespace Tests
             Assert.IsTrue(player.Stack== 1590);
             Assert.IsTrue(player.Bet== 80);
 
+            var ourPlayer = state.OurPlayer;
+            Assert.AreEqual(ourPlayer.Name,"Bob");
 
 
             Assert.IsNotNull(state);
