@@ -72,6 +72,7 @@
   <ItemGroup>
     <Compile Include="CalculateBet.cs" />
     <Compile Include="CardsOnHand.cs" />
+    <Compile Include="CreateHandBasedRank.cs" />
     <Compile Include="Hand.cs" />
     <Compile Include="NumberToString.cs" />
     <Compile Include="Rank.cs" />

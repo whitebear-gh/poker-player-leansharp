@@ -32,12 +32,37 @@ namespace Nancy.Simple
 
         public class Player
         {
+            public Player(JObject player)
+            {
+                Name = player["name"].ToString();
+                JToken cards;
+                if (player.TryGetValue("hole_cards", out cards))
+                {
+                    HoleCards = JsonConvert.DeserializeObject<List<Card>>(cards.ToString());
+                    
+                }
+
+                Version = player["version"].ToString();
+                Stack = Convert.ToInt32(player["stack"].ToString());
+                Bet = Convert.ToInt32(player["bet"].ToString());
+
+                PlayerStatus status;
+                if (PlayerStatus.TryParse(player["status"].ToString(), true, out status))
+                {
+                    Status = status;
+                }
+                Id = Convert.ToInt32(player["id"].ToString());
+
+            }
+
             public string Name { get; set; }
             public int Stack { get; set; }
             public int Bet { get; set; }
 
             public PlayerStatus Status { get; set; }
-            public List<Card> HoldCards { get; set; }
+            public List<Card> HoleCards { get; set; }
+            //public string HoleCards { get; set; }
+            
 
             public int Id { get; set; }
             public string Version { get; set; }
@@ -49,7 +74,16 @@ namespace Nancy.Simple
         {
             public GameState(JObject gameState)
             {
-                Players = JsonConvert.DeserializeObject<List<Player>>(gameState["players"].ToString());
+                //Players = JsonConvert.DeserializeObject<List<Player>>(gameState["players"].ToString());
+
+                var players = JsonConvert.DeserializeObject<IEnumerable<object>>(gameState["players"].ToString());
+                Players = new List<Player>();
+                foreach (var player in players)
+                {
+                    var p = new Player(JObject.Parse(player.ToString()));
+                   Players.Add(p);
+                }
+
                 TournamentId = gameState["tournament_id"].ToString();
                 GameId = gameState["game_id"].ToString();
                 Round = Convert.ToInt32(gameState["round"].ToString());
@@ -87,10 +121,10 @@ namespace Nancy.Simple
                 }
             }
 
-            public List<Card> OurCards
-            {
-                get { return OurPlayer.HoldCards; }
-            }
+            //public List<Card> OurCards
+            //{
+            //    get { return OurPlayer.HoleCards; }
+            //}
 
             //          "tournament_id":"550d1d68cd7bd10003000003",
             //"game_id":"550da1cb2d909006e90004b1",
