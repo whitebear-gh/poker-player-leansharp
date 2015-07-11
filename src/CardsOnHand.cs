@@ -1,5 +1,6 @@
-﻿using System;
+using System;
 using System.Diagnostics.Eventing.Reader;
+using System.Dynamic;
 using System.Dynamic;
 using Newtonsoft.Json.Linq;
 
